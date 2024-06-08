@@ -6,7 +6,11 @@ const outputMsg = document.querySelector('.output-message');
 //dark mode veriables
 // const darkModeToggle = document.getElementById('dark-mode-checkbox');
 const root = document.documentElement;
-
+const encode = (data) => {
+	return Object.keys(data)
+		.map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+		.join('&');
+};
 //validating the input
 const validateEmail = (email) => {
 	const emailRegex =
@@ -19,29 +23,29 @@ const validateEmail = (email) => {
 btnSubmit.addEventListener('click', async function (e) {
 	e.preventDefault();
 	let message = '';
-	const userEmail = inputEmail.value;
+	const userEmail = String(inputEmail.value)?.trim();
 
 	if (userEmail === '') {
 		message = 'Whoops! It looks like you forgot to add your email';
 		outputDesign('error');
 	} else if (validateEmail(userEmail)) {
 		message = 'Thank you for subscribing!';
-		try {
-			await fetch('/', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				body: encode({
-					'form-name': 'contact',
-					email: userEmail,
-				}),
+		await fetch('/', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: encode({
+				'form-name': 'contact',
+				email: userEmail,
+			}),
+		})
+			.then(() => {
+				outputDesign('success');
+				inputEmail.value = '';
+			})
+			.catch((error) => {
+				message = error.message;
+				outputDesign('error');
 			});
-			outputDesign('success');
-			inputEmail.value = '';
-		} catch (e) {
-			console.log(e);
-			message = e.message;
-			outputDesign('error');
-		}
 	} else {
 		message = 'Please provide a valid email.';
 		outputDesign('error');
