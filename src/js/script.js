@@ -58,7 +58,7 @@ const outputDesign = function (status) {
 		outputMsg.style.color = 'var(--light-red)';
 		inputEmail.style.borderColor = 'var(--light-red)';
 	} else if (status === 'success') {
-		inputEmail.style.borderColor = 'var(--light-red)';
+		inputEmail.style.borderColor = 'var(--success)';
 		outputMsg.style.color = 'var(--success)';
 	}
 };
