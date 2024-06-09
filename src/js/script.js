@@ -31,8 +31,7 @@ const handleSubmit = async (event) => {
 	} else if (validateEmail(userEmail)) {
 		const myForm = event.target;
 		const formData = new FormData(myForm);
-		console.log(formData);
-		fetch('/', {
+		await fetch('/', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: new URLSearchParams(formData).toString(),
