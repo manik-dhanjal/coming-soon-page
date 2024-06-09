@@ -20,8 +20,8 @@ const validateEmail = (email) => {
 };
 
 //submit button funtionality
-btnSubmit.addEventListener('click', async function (e) {
-	e.preventDefault();
+const handleSubmit = async (event) => {
+	event.preventDefault();
 	let message = '';
 	const userEmail = String(inputEmail.value)?.trim();
 
@@ -29,16 +29,16 @@ btnSubmit.addEventListener('click', async function (e) {
 		message = 'Whoops! It looks like you forgot to add your email';
 		outputDesign('error');
 	} else if (validateEmail(userEmail)) {
-		message = 'Thank you for subscribing!';
-		await fetch('/', {
+		const myForm = event.target;
+		const formData = new FormData(myForm);
+		console.log(formData);
+		fetch('/', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: encode({
-				'form-name': 'contact',
-				email: userEmail,
-			}),
+			body: new URLSearchParams(formData).toString(),
 		})
 			.then(() => {
+				message = 'Thank you for subscribing!';
 				outputDesign('success');
 				inputEmail.value = '';
 			})
@@ -51,7 +51,7 @@ btnSubmit.addEventListener('click', async function (e) {
 		outputDesign('error');
 	}
 	return (outputMsg.textContent = message);
-});
+};
 
 //designing the elements
 const outputDesign = function (status) {
@@ -63,6 +63,10 @@ const outputDesign = function (status) {
 		outputMsg.style.color = 'var(--success)';
 	}
 };
+
+document
+	.querySelector('.form-container')
+	.addEventListener('submit', handleSubmit);
 
 //dark mode feature
 // const darkMode = function () {

@@ -97,12 +97,15 @@
 						action=""
 						class="form-container"
 						data-netlify="true"
-						name="contact"
+						name="subscribe"
+						onSubmit="{handleSubmit}"
 					>
 						<div class="input-wrapper">
+							<input type="hidden" name="form-name" value="subscribe" />
 							<input
 								class="input-email"
 								type="email"
+								name="email"
 								placeholder="Your email address..."
 							/>
 							<p class="output-message"></p>
